@@ -1,5 +1,5 @@
 # kirei
-![image](/kirei/image.png)
+![image](https://i.imgur.com/6l5QGhJ.png)
 
 Mass removal of twitter users from a list.
 
