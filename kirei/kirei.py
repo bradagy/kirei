@@ -14,7 +14,7 @@ client = tweepy.Client (
 
 print("Go to the main page of any of your twitter lists."
 " The link at the top of the page should look something like this:"
-" https://twitter.com/i/lists/series-of-numbers"
+" https://twitter.com/i/lists/series-of-numbers."
 " Copy that link and submit it below.\n")
 
 twitter_list_url = input("Paste the twitter list link here: ")
@@ -52,7 +52,7 @@ def remove_users_with_specific_chars_at_beginning():
     """Removing users with certain character(s) at the beginning of their username from a twitter list."""
     enter_beginning_of_username = input("Enter the first few character(s) or characters of the specified user(s)'s username: ")
 
-    lst_of_usernames = [member.username for member in twitter_list if member.username.startswith(enter_beginning_of_username.upper())]
+    lst_of_usernames = [member.username for member in twitter_list if member.username.lower().startswith(enter_beginning_of_username.lower())]
     lst_of_ids = [member.id for member in twitter_list]
 
     if len(lst_of_usernames) == 0:
@@ -84,13 +84,13 @@ def remove_users_with_specific_chars_at_beginning():
                 for counter, member_info in enumerate(zip(lst_of_usernames, lst_of_ids)):
                     if member_info[0].lower().startswith(enter_beginning_of_username.lower()):
                         print(f"Removing @{member_info[0]} from the list titled \"{name_of_twitter_list.data['name'].capitalize()}.")
-                        # client.remove_list_member(id=twitter_list_ID, user_id=member_info[1], user_auth=True)
+                        client.remove_list_member(id=twitter_list_ID, user_id=member_info[1], user_auth=True)
                         time.sleep(0.3)
 
             # Adding some hyphens as lines to separate usernames because I'm lowkey dyslexic .
                 print('-' * 60)
                 print(f"\n *** Removed a total of {len(lst_of_usernames)} users from this twitter list. ***"
-                " You will find their usernames below.\n")
+                " Their usernames have been posted below.\n")
 
                 for member_username in lst_of_usernames:
                     print(f"@{member_username}")
