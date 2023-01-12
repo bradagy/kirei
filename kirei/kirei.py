@@ -102,31 +102,49 @@ name_of_twitter_list = client.get_list(id=twitter_list_ID, user_auth=True).data
 #
 def remove_all_users():
     """Removing all members from a twitter list."""
-    list_of_pagination_tokens = []
+    IDs_of_users_to_remove = []
+    pagination_tokens = []
+    total_amount_of_usernames = []
     next_token = None
+
     while True:
-        # Meta info is basically a dictionary that contains the result count, and next token 
-        # needed for pagination (aka moving to the "next" page) because the max results for the
-        # client.get_list_members method only allows 100 users to be returned default.
-        meta_info_for_twitter_list = client.get_list_members(id = twitter_list_ID, user_auth = True, pagination_token = next_token).meta
-        if 'next_token' not in meta_info_for_twitter_list:
-            break
+        try:
+            answers = ['Y', 'N']
+            confirm = input("Select (Y / N) in order to begin the removal process: ")
+            if confirm.upper() not in answers:
+                raise ValueError("Invalid option.")
+        except ValueError:
+            print("Please choose a valid option.") 
         else:
-            # Add the next token needed to access the next page of the specified twitter list.
-            list_of_pagination_tokens.append(meta_info_for_twitter_list['next_token'])
-            # Updating the value of the next token to the current value in meta_info_for_twitter_list
-            # which is the dictionary that contains the result count, and next token needed for pagination.
-            next_token = meta_info_for_twitter_list['next_token']
+            # Meta info is basically a dictionary that contains the result count, and next token 
+            # needed for pagination (aka moving to the "next" page) because the max results for the
+            # client.get_list_members method only allows 100 users to be returned by default.
+            meta_info_for_twitter_list = client.get_list_members(id = twitter_list_ID, user_auth = True, pagination_token = next_token).meta
 
-    total_list_of_users = []
-    for token in list_of_pagination_tokens:
-        usernames = sorted(member.username.capitalize() for member in client.get_list_members(id = twitter_list_ID, user_auth = True, pagination_token = token).data)
-        for username in usernames:
-            total_list_of_users.append(username)
+            if 'next_token' not in meta_info_for_twitter_list:
+                break
+            else:
+                # Update the list of pagination tokens with the next token 
+                # needed to access the next page of the specified twitter list.
+                pagination_tokens.append(meta_info_for_twitter_list['next_token'])
+                # Updating the value of the next token to the current value in meta_info_for_twitter_list
+                # which is the dictionary that contains the result count, and next token needed for pagination.
+                next_token = meta_info_for_twitter_list['next_token']
+                
+                for member in client.get_list_members(id = twitter_list_ID, user_auth = True, pagination_token = next_token).data:
+                    IDs_of_users_to_remove.append(member.id)
+            
+
+    for token in pagination_tokens:
+        usernames = [member.username.capitalize() for member in client.get_list_members(id = twitter_list_ID, user_auth = True, pagination_token = token).data]
+    for username in usernames:
+        total_amount_of_usernames.append(username)
+    
+    # Displaying all of the users associated with the list.
+    for counter, username in enumerate(total_amount_of_usernames, start = 1):
+        print(f"{counter}. @{username}")
 
 
-    for index, user in enumerate(total_list_of_users, start = 1):
-        print(f"{index}. @{user}")
 
 # if __name__ == '__main__':
 #     main()
