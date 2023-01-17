@@ -34,7 +34,7 @@ name_of_twitter_list = client.get_list(id=twitter_list_ID, user_auth=True).data
 #                                                 "1. Remove user(s) with a specific letter at the beginning of their username from this list?\n"
 #                                                 "2. Remove ALL user(s) from this list?\n"
 #                                                 "\nEnter number: "))
-#             if remove_selected_users_question not in [1, 2]:
+#             if remove_selected_users_question not in {1, 2}:
 #                 print("The input you entered is not valid. Please try again.")
 #                 continue
 #         except ValueError:
@@ -42,8 +42,12 @@ name_of_twitter_list = client.get_list(id=twitter_list_ID, user_auth=True).data
 #             continue
 #         else:
 #             if remove_selected_users_question == 1:
+                # print('You selected the option to remove users with a specfic letter at the beginning of their username.')
+                # time.sleep(4)
 #                 remove_users_with_specific_chars_at_beginning()
 #             elif remove_selected_users_question == 2:
+                # print('You selected option #2 (remove all users from twitter list).')
+                # time.sleep(4)
 #                 remove_all_users()
 #             break
 #
@@ -70,7 +74,7 @@ name_of_twitter_list = client.get_list(id=twitter_list_ID, user_auth=True).data
 #             print(f"{counter}. @{member_info[0]}")
 #
 #         while True:
-#             answers = ['Y', 'N']
+#             answers = {'Y', 'N'}
 #             confirm_removal_process = input("\nWould you like to confirm the removal process. "
 #             "Remember, this will remove all the users from your selected list whose username(s) start with "
 #             "the character(s) you specified. Continue? (Y / N): ")
@@ -108,14 +112,6 @@ def remove_all_users():
     next_token = None
 
     while True:
-        # try:
-        #     answers = ['Y', 'N']
-        #     confirm = input("Select (Y / N) in order to begin the removal process: ")
-        #     if confirm.upper() not in answers:
-        #         raise ValueError("Invalid option.")
-        # except ValueError:
-        #     print("Please choose a valid option.") 
-        # else:
         # Meta info is basically a dictionary that contains the result count, and next token 
         # needed for pagination (aka moving to the "next" page) because the max results for the
         # client.get_list_members method only allows 100 users to be returned by default.
@@ -130,21 +126,58 @@ def remove_all_users():
             # Updating the value of the next token to the current value in meta_info_for_twitter_list
             # which is the dictionary that contains the result count, and next token needed for pagination.
             next_token = meta_info_for_twitter_list['next_token']
-
+    
         
     # Adding all of the usernames and IDs into two separate lists. 
-    for token in pagination_tokens:
-        members = client.get_list_members(id = twitter_list_ID, user_auth = True, pagination_token = token).data
-        usernames = [[member.username.capitalize(), member.id] for member in members]
-        for member in usernames:
-            IDs_of_users_to_remove.append(member[1])
-            total_amount_of_usernames.append(member[0])
-        
+    #for token in pagination_tokens:
+    #    members = client.get_list_members(id = twitter_list_ID, user_auth = True, pagination_token = token).data
+    #    usernames = [[member.username.capitalize(), member.id] for member in members]
+    #    for member in usernames:
+    #        IDs_of_users_to_remove.append(member[1])
+    #        total_amount_of_usernames.append(member[0])
+    #    
 
+    #        
+    ## Displaying all of the users associated with the list.
+    #print('Below is a list of all the users that are members of your selected twitter list.')
+    #time.sleep(5)
+    #for counter, username in enumerate(sorted(total_amount_of_usernames), start = 1):
+    #    print(f"{counter}. @{username}")
+    #    time.sleep(0.02)
+    while True:
+        answers = {'Y', 'N'}
+        confirm_removal_process = input('\nConfirm the removal process (Enter "Y" or "N"): ')
+        if confirm_removal_process.upper() not in answers:
+            print("\nPlease choose a valid option.\n")
+            continue
+        elif confirm_removal_process.upper() == "N":
+            print("You selected (No). Exiting program.")
+            break
+        elif confirm_removal_process.upper() == "Y":
+            # Adding all of the usernames and IDs into two separate lists. 
+            for token in pagination_tokens:
+                members = client.get_list_members(id = twitter_list_ID, user_auth = True, pagination_token = token).data
+                usernames = [[member.username.capitalize(), member.id] for member in members]
+                for member in usernames:
+                    IDs_of_users_to_remove.append(member[1])
+                    total_amount_of_usernames.append(member[0])
+                
+
+                    
+            # Displaying all of the users associated with the list.
+            print('Below is a list of all the users that are members of your selected twitter list.')
+            time.sleep(5)
+            for counter, username in enumerate(sorted(total_amount_of_usernames), start = 1):
+                print(f"{counter}. @{username}")
+                time.sleep(0.02)
             
-    # Displaying all of the users associated with the list.
-    for counter, username in enumerate(sorted(total_amount_of_usernames), start = 1):
-        print(f"{counter}. @{username}")
+            print('Removing members.')
+            time.sleep(4)
+            for counter, member_info in enumerate(zip(total_amount_of_usernames, IDs_of_users_to_remove)):
+                print(f"Removing @{member_info[0]} from the list titled \"{name_of_twitter_list.data['name'].capitalize()}.\n")
+                # client.remove_list_member(id=twitter_list_ID, user_id=member_info[1], user_auth=True)
+                time.sleep(0.04)
+
 
 
 
