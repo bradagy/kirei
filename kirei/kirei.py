@@ -127,58 +127,43 @@ def remove_all_users():
             # which is the dictionary that contains the result count, and next token needed for pagination.
             next_token = meta_info_for_twitter_list['next_token']
     
-        
-    # Adding all of the usernames and IDs into two separate lists. 
-    #for token in pagination_tokens:
-    #    members = client.get_list_members(id = twitter_list_ID, user_auth = True, pagination_token = token).data
-    #    usernames = [[member.username.capitalize(), member.id] for member in members]
-    #    for member in usernames:
-    #        IDs_of_users_to_remove.append(member[1])
-    #        total_amount_of_usernames.append(member[0])
-    #    
-
-    #        
-    ## Displaying all of the users associated with the list.
-    #print('Below is a list of all the users that are members of your selected twitter list.')
-    #time.sleep(5)
-    #for counter, username in enumerate(sorted(total_amount_of_usernames), start = 1):
-    #    print(f"{counter}. @{username}")
-    #    time.sleep(0.02)
     while True:
         answers = {'Y', 'N'}
-        confirm_removal_process = input('\nConfirm the removal process (Enter "Y" or "N"): ')
-        if confirm_removal_process.upper() not in answers:
-            print("\nPlease choose a valid option.\n")
-            continue
-        elif confirm_removal_process.upper() == "N":
-            print("You selected (No). Exiting program.")
-            break
-        elif confirm_removal_process.upper() == "Y":
-            # Adding all of the usernames and IDs into two separate lists. 
-            for token in pagination_tokens:
-                members = client.get_list_members(id = twitter_list_ID, user_auth = True, pagination_token = token).data
-                usernames = [[member.username.capitalize(), member.id] for member in members]
-                for member in usernames:
-                    IDs_of_users_to_remove.append(member[1])
-                    total_amount_of_usernames.append(member[0])
+        try:
+            confirm_removal_process = input('\nConfirm the removal process (Enter \'Y\' or \'N\'): ')
+            if confirm_removal_process.upper() not in answers:
+                    raise ValueError
+            if confirm_removal_process.upper() == 'N':
+                print('You selected (No). Exiting program.')
+                break
+            elif confirm_removal_process.upper() == 'Y':
+                # Addding all of the usernames and IDs into two separate lists.
+                for token in pagination_tokens:
+                    members = client.get_list_members(id = twitter_list_ID, user_auth = True, pagination_token = token).data
+                    usernames = [[member.username.capitalize(), member.id] for member in members]
+                    for member in usernames:
+                        IDs_of_users_to_remove.append(member[1])
+                        total_amount_of_usernames.append(member[0])
                 
-
-                    
-            # Displaying all of the users associated with the list.
-            print('Below is a list of all the users that are members of your selected twitter list.')
-            time.sleep(5)
-            for counter, username in enumerate(sorted(total_amount_of_usernames), start = 1):
-                print(f"{counter}. @{username}")
-                time.sleep(0.02)
-            
-            print('Removing members.')
-            time.sleep(4)
-            for counter, member_info in enumerate(zip(total_amount_of_usernames, IDs_of_users_to_remove)):
-                print(f"Removing @{member_info[0]} from the list titled \"{name_of_twitter_list.data['name'].capitalize()}.\n")
-                # client.remove_list_member(id=twitter_list_ID, user_id=member_info[1], user_auth=True)
-                time.sleep(0.04)
-
-
+                # Displaying all of the users associated with the list.
+                print('Below is a list of all the users that are members of your selected twitter list.')
+                time.sleep(5)
+                for counter, username in enumerate(sorted(total_amount_of_usernames), start = 1):
+                    print(f"{counter}. @{username}")
+                    time.sleep(0.02)
+                
+                print('Removing members.')
+                time.sleep(4)
+                for counter, member_info in enumerate(zip(sorted(total_amount_of_usernames), IDs_of_users_to_remove)):
+                    print(f"Removing @{member_info[0]} from the list titled \"{name_of_twitter_list.data['name'].capitalize()}.")
+                    # client.remove_list_member(id=twitter_list_ID, user_id=member_info[1], user_auth=True)
+                    time.sleep(0.02)
+                    if len(IDs_of_users_to_remove) == 0:
+                        pass
+                    else:
+                        pass
+        except ValueError:
+            print("\nPlease choose a valid option.\n")
 
 
 # if __name__ == '__main__':
