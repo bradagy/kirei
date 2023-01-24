@@ -127,18 +127,6 @@ def remove_all_users():
             # which is the dictionary that contains the result count, and next token needed for pagination.
             next_token = response['next_token']
 
-    # If there isn't a next token available or the length of the pagination_tokens list is too short,
-    # this will allow all of the members of the specified twitter list to be added to the total_amount_of_usernames list.
-    
-    
-    for user in sorted(total_amount_of_usernames):
-        print(user)
-
-
-
-
-    
-
     while True:
         answers = {'Y', 'N'}
         try:
