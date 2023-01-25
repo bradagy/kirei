@@ -111,7 +111,6 @@ def remove_all_users():
     total_amount_of_usernames = []
 
     next_token = None
-
     while True:
         # Meta info is basically a dictionary that contains the result count, and next token 
         # needed for pagination (aka moving to the "next" page) because the max results for the
