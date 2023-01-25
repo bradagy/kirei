@@ -27,83 +27,83 @@ twitter_list = client.get_list_members(id=twitter_list_ID, user_auth=True).data
 name_of_twitter_list = client.get_list(id=twitter_list_ID, user_auth=True).data
 
 
-# def main():
-#     while True:
-#         try:
-#             remove_selected_users_question = int(input("\nWould you like to...\n"
-#                                                 "1. Remove user(s) with a specific letter at the beginning of their username from this list?\n"
-#                                                 "2. Remove ALL user(s) from this list?\n"
-#                                                 "\nEnter number: "))
-#             if remove_selected_users_question not in {1, 2}:
-#                 print("The input you entered is not valid. Please try again.")
-#                 continue
-#         except ValueError:
-#             print("The input you entered is not valid. Please try again.")
-#             continue
-#         else:
-#             if remove_selected_users_question == 1:
-                # print('You selected the option to remove users with a specfic letter at the beginning of their username.')
-                # time.sleep(4)
-#                 remove_users_with_specific_chars_at_beginning()
-#             elif remove_selected_users_question == 2:
-                # print('You selected option #2 (remove all users from twitter list).')
-                # time.sleep(4)
-#                 remove_all_users()
-#             break
-#
-#
-# def remove_users_with_specific_chars_at_beginning():
-#     """Removing users with certain character(s) at the beginning of their username from a twitter list."""
-#     enter_beginning_of_username = input("Enter the first few character(s) or characters of the specified user(s)'s username: ")
-#
-#     lst_of_usernames = [member.username for member in twitter_list if member.username.lower().startswith(enter_beginning_of_username.lower())]
-#     lst_of_ids = [member.id for member in twitter_list]
-#
-#     if len(lst_of_usernames) == 0:
-#         print(f"\n ***This list contains 0 individuals whose username(s) start with the character(s) \"{enter_beginning_of_username}\". \n"
-#         "\nExiting program. ***")
-#         input()
-#     else:
-#         print(f"\n*** This list contains {len(lst_of_usernames)} individual(s) whose username(s) start with the character(s) \"{enter_beginning_of_username}\"."
-#         " You can find the user(s) listed below. ***\n")
-#         time.sleep(2)
-#         print("Press ENTER to continue.")
-#         input()
-#
-#         for counter, member_info in enumerate(zip(lst_of_usernames, lst_of_ids)):
-#             print(f"{counter}. @{member_info[0]}")
-#
-#         while True:
-#             answers = {'Y', 'N'}
-#             confirm_removal_process = input("\nWould you like to confirm the removal process. "
-#             "Remember, this will remove all the users from your selected list whose username(s) start with "
-#             "the character(s) you specified. Continue? (Y / N): ")
-#             if confirm_removal_process.upper() not in answers:
-#                 print("\nPlease choose a valid option.\n")
-#                 continue
-#             elif confirm_removal_process.upper() == "N":
-#                 print("You selected (No). Exiting program.")
-#                 break
-#             elif confirm_removal_process.upper() == "Y":
-#                 for counter, member_info in enumerate(zip(lst_of_usernames, lst_of_ids)):
-#                     if member_info[0].lower().startswith(enter_beginning_of_username.lower()):
-#                         print(f"Removing @{member_info[0]} from the list titled \"{name_of_twitter_list.data['name'].capitalize()}.")
-#                         client.remove_list_member(id=twitter_list_ID, user_id=member_info[1], user_auth=True)
-#                         time.sleep(0.3)
-#
-#             # Adding some hyphens as lines to separate usernames because I'm lowkey dyslexic .
-#                 print('-' * 60)
-#                 print(f"\n *** Removed a total of {len(lst_of_usernames)} users from this twitter list. ***"
-#                 " Their usernames have been posted below.\n")
-#
-#                 for member_username in lst_of_usernames:
-#                     print(f"@{member_username}")
-#
-#                 print("Press ENTER to exit.")
-#                 input()
-#                 break
-#
-#
+def main():
+    while True:
+        try:
+            remove_selected_users_question = int(input("\nWould you like to...\n"
+                                                "1. Remove user(s) with a specific letter at the beginning of their username from this list?\n"
+                                                "2. Remove ALL user(s) from this list?\n"
+                                                "\nEnter number: "))
+            if remove_selected_users_question not in {1, 2}:
+                print("The input you entered is not valid. Please try again.")
+                continue
+        except ValueError:
+            print("The input you entered is not valid. Please try again.")
+            continue
+        else:
+            if remove_selected_users_question == 1:
+                print('You selected the option to remove users with a specfic letter at the beginning of their username.')
+                time.sleep(4)
+                remove_users_with_specific_chars_at_beginning()
+            elif remove_selected_users_question == 2:
+                print('You selected option #2 (remove all users from twitter list).')
+                time.sleep(4)
+                remove_all_users()
+            break
+
+
+def remove_users_with_specific_chars_at_beginning():
+    """Removing users with certain character(s) at the beginning of their username from a twitter list."""
+    enter_beginning_of_username = input("Enter the first few character(s) or characters of the specified user(s)'s username: ")
+
+    lst_of_usernames = [member.username for member in twitter_list if member.username.lower().startswith(enter_beginning_of_username.lower())]
+    lst_of_ids = [member.id for member in twitter_list]
+
+    if len(lst_of_usernames) == 0:
+        print(f"\n ***This list contains 0 individuals whose username(s) start with the character(s) \"{enter_beginning_of_username}\". \n"
+        "\nExiting program. ***")
+        input()
+    else:
+        print(f"\n*** This list contains {len(lst_of_usernames)} individual(s) whose username(s) start with the character(s) \"{enter_beginning_of_username}\"."
+        " You can find the user(s) listed below. ***\n")
+        time.sleep(2)
+        print("Press ENTER to continue.")
+        input()
+
+        for counter, member_info in enumerate(zip(lst_of_usernames, lst_of_ids)):
+            print(f"{counter}. @{member_info[0]}")
+
+        while True:
+            answers = {'Y', 'N'}
+            confirm_removal_process = input("\nWould you like to confirm the removal process. "
+            "Remember, this will remove all the users from your selected list whose username(s) start with "
+            "the character(s) you specified. Continue? (Y / N): ")
+            if confirm_removal_process.upper() not in answers:
+                print("\nPlease choose a valid option.\n")
+                continue
+            elif confirm_removal_process.upper() == "N":
+                print("You selected (No). Exiting program.")
+                break
+            elif confirm_removal_process.upper() == "Y":
+                for counter, member_info in enumerate(zip(lst_of_usernames, lst_of_ids)):
+                    if member_info[0].lower().startswith(enter_beginning_of_username.lower()):
+                        print(f"Removing @{member_info[0]} from the list titled \"{name_of_twitter_list.data['name'].capitalize()}.")
+                        client.remove_list_member(id=twitter_list_ID, user_id=member_info[1], user_auth=True)
+                        time.sleep(0.3)
+
+            # Adding some hyphens as lines to separate usernames because I'm lowkey dyslexic .
+                print('-' * 60)
+                print(f"\n *** Removed a total of {len(lst_of_usernames)} users from this twitter list. ***"
+                " Their usernames have been posted below.\n")
+
+                for member_username in lst_of_usernames:
+                    print(f"@{member_username}")
+
+                print("Press ENTER to exit.")
+                input()
+                break
+
+
 def remove_all_users():
     """Removing all members from a twitter list."""
     pagination_tokens = []
@@ -111,6 +111,7 @@ def remove_all_users():
     total_amount_of_usernames = []
 
     next_token = None
+
     while True:
         # Meta info is basically a dictionary that contains the result count, and next token 
         # needed for pagination (aka moving to the "next" page) because the max results for the
@@ -156,7 +157,6 @@ def remove_all_users():
                         members = client.get_list_members(id = twitter_list_ID, user_auth = True, pagination_token = token).data
                         usernames = [[member.username.capitalize(), member.id] for member in members]
                         for member in usernames:
-                            # Adding the IDs and usernames of each user to different lists.
                             IDs_of_users_to_remove.append(member[1])
                             total_amount_of_usernames.append(member[0])
                 
@@ -171,14 +171,14 @@ def remove_all_users():
                 time.sleep(4)
                 for counter, member_info in enumerate(zip(sorted(total_amount_of_usernames), IDs_of_users_to_remove)):
                     print(f"Removing @{member_info[0]} from the list titled \"{name_of_twitter_list.data['name'].capitalize()}.")
-                    # client.remove_list_member(id=twitter_list_ID, user_id=member_info[1], user_auth=True)
-                    time.sleep(0.03)
+                    client.remove_list_member(id=twitter_list_ID, user_id=member_info[1], user_auth=True)
+                    time.sleep(0.020
+                print("All users have been removed from the specified twitter list. Exiting program.")
+                input()
+                break
         except ValueError:
             print("\nPlease choose a valid option.\n")
 
 
-# if __name__ == '__main__':
-#     main()
-
-
-remove_all_users()
+if __name__ == '__main__':
+    main()
