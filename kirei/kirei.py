@@ -173,7 +173,7 @@ def remove_all_users():
                 for counter, member_info in enumerate(zip(sorted(total_amount_of_usernames), IDs_of_users_to_remove)):
                     print(f"Removing @{member_info[0]} from the list titled \"{name_of_twitter_list.data['name'].capitalize()}.")
                     client.remove_list_member(id=twitter_list_ID, user_id=member_info[1], user_auth=True)
-                    time.sleep(0.020
+                    time.sleep(0.02)
                 print("All users have been removed from the specified twitter list. Exiting program.")
                 input()
                 break
