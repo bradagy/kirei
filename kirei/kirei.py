@@ -141,6 +141,7 @@ def remove_all_users():
                 # If there isn't a next token available or the length of the pagination_tokens list less than or equal to one,
                 # this entire if-else block will allow all of the members of the specified twitter list to be added to the total_amount_of_usernames list.
                 if len(pagination_tokens) <= 1:
+                    # Adding the members associated with the pagination token list to the main list of users to be removed.
                     for token in pagination_tokens:
                         members = client.get_list_members(id = twitter_list_ID, user_auth = True, pagination_token = token).data
                         usernames = [[member.username.capitalize(), member.id] for member in members]
@@ -149,6 +150,7 @@ def remove_all_users():
                             IDs_of_users_to_remove.append(member[1])
                             total_amount_of_usernames.append(member[0])
 
+                    # Adding the members not associated with the pagination token list to the main list of users to be removed.
                     for member in client.get_list_members(id = twitter_list_ID, user_auth = True).data:
                         total_amount_of_usernames.append(member.username.capitalize())
                         IDs_of_users_to_remove.append(member.id)
