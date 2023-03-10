@@ -114,7 +114,7 @@ def remove_all_users():
     while True:
         # Meta info is basically a dictionary that contains the result count, and next token 
         # needed for pagination (aka moving to the "next" page) because the max results for the
-        # client.get_list_members method only allows 100 users to be returned by default.
+        # client.get_list_members method allows 100 users to be returned by default.
         response = client.get_list_members(id = twitter_list_ID, user_auth = True, pagination_token = next_token).meta
 
         if 'next_token' not in response:
