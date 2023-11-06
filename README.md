@@ -3,5 +3,4 @@
 
 Mass removal of twitter users from a list.
 
-## How to run
-## Features included
+This project is now deprecated due to the recent changes made to the Twitter API.
